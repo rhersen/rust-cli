@@ -19,7 +19,11 @@ impl TrainAnnouncement {
     }
 
     pub(crate) fn to_location(&self) -> String {
-        self.ToLocation[0].LocationName.to_string()
+        self.ToLocation
+            .iter()
+            .map(|location| location.LocationName.clone())
+            .collect::<Vec<String>>()
+            .join(", ")
     }
 
     pub(crate) fn time_at_location(&self) -> String {
