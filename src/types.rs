@@ -1,3 +1,4 @@
+use crate::train_announcement::TrainAnnouncement;
 use serde::Deserialize;
 
 #[derive(Deserialize, Debug, Clone)]
@@ -5,15 +6,6 @@ pub struct Location {
     pub LocationName: String,
     pub Priority: i32,
     pub Order: i32,
-}
-
-#[derive(Deserialize, Debug, Clone)]
-pub struct TrainAnnouncement {
-    pub ActivityType: String,
-    pub AdvertisedTimeAtLocation: String,
-    pub TimeAtLocationWithSeconds: Option<String>,
-    pub FromLocation: Vec<Location>,
-    pub ToLocation: Vec<Location>,
 }
 
 #[derive(Deserialize, Debug)]

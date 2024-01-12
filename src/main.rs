@@ -1,9 +1,10 @@
-use crate::types::TrainAnnouncement;
 use reqwest::header::{HeaderMap, CONTENT_TYPE};
 use reqwest::Error;
 use serde::Deserialize;
+use train_announcement::TrainAnnouncement;
 use types::Root;
 
+mod train_announcement;
 mod types;
 
 async fn post_xml_data() -> Result<Vec<TrainAnnouncement>, Error> {
@@ -27,7 +28,6 @@ async fn post_xml_data() -> Result<Vec<TrainAnnouncement>, Error> {
             </FILTER>
             <INCLUDE>ActivityType</INCLUDE>
             <INCLUDE>AdvertisedTimeAtLocation</INCLUDE>
-            <INCLUDE>FromLocation</INCLUDE>
             <INCLUDE>TimeAtLocationWithSeconds</INCLUDE>
             <INCLUDE>ToLocation</INCLUDE>
         </QUERY>
@@ -56,13 +56,10 @@ async fn main() {
             for announcement in announcements {
                 println!(
                     "{}\t{}\t{} {}",
-                    announcement.ToLocation[0].LocationName,
-                    announcement.ActivityType,
-                    &announcement.AdvertisedTimeAtLocation[11..16],
-                    match &announcement.TimeAtLocationWithSeconds {
-                        None => "-",
-                        Some(s) => &s[11..19],
-                    }
+                    announcement.to_location(),
+                    announcement.activity_type(),
+                    announcement.advertised_time(),
+                    announcement.time_at_location()
                 )
             }
         }
