@@ -1,6 +1,5 @@
 use reqwest::header::{HeaderMap, CONTENT_TYPE};
 use reqwest::Error;
-use serde::Deserialize;
 use train_announcement::TrainAnnouncement;
 use types::Root;
 
@@ -22,12 +21,13 @@ async fn post_xml_data() -> Result<Vec<TrainAnnouncement>, Error> {
             <FILTER>
                 <AND>
                     <EQ name='LocationSignature' value='Tul' />
-                    <GT name='AdvertisedTimeAtLocation' value='2024-01-12T11:00:04.137Z' />
-                    <LT name='AdvertisedTimeAtLocation' value='2024-01-12T11:59:04.137Z' />
+                    <GT name='AdvertisedTimeAtLocation' value='2024-02-09T07:00:04.137Z' />
+                    <LT name='AdvertisedTimeAtLocation' value='2024-02-09T07:59:04.137Z' />
                 </AND>
             </FILTER>
             <INCLUDE>ActivityType</INCLUDE>
             <INCLUDE>AdvertisedTimeAtLocation</INCLUDE>
+            <INCLUDE>AdvertisedTrainIdent</INCLUDE>
             <INCLUDE>TimeAtLocationWithSeconds</INCLUDE>
             <INCLUDE>ToLocation</INCLUDE>
         </QUERY>
@@ -55,7 +55,8 @@ async fn main() {
         Ok(announcements) => {
             for announcement in announcements {
                 println!(
-                    "{}\t{}\t{} {}",
+                    "{}\t{}\t{}\t{} {}",
+                    announcement.train_ident(),
                     announcement.to_location(),
                     announcement.activity_type(),
                     announcement.advertised_time(),

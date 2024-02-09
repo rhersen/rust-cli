@@ -1,3 +1,5 @@
+#![allow(non_snake_case)]
+
 use crate::types::Location;
 use serde::Deserialize;
 
@@ -5,6 +7,7 @@ use serde::Deserialize;
 pub struct TrainAnnouncement {
     ActivityType: String,
     AdvertisedTimeAtLocation: String,
+    AdvertisedTrainIdent: String,
     TimeAtLocationWithSeconds: Option<String>,
     ToLocation: Vec<Location>,
 }
@@ -21,7 +24,7 @@ impl TrainAnnouncement {
     pub(crate) fn to_location(&self) -> String {
         self.ToLocation
             .iter()
-            .map(|location| location.LocationName.clone())
+            .map(|it| it.LocationName.clone())
             .collect::<Vec<String>>()
             .join(", ")
     }
@@ -31,5 +34,9 @@ impl TrainAnnouncement {
             Some(time) => time[11..19].to_string(),
             None => "-".to_string(),
         }
+    }
+
+    pub(crate) fn train_ident(&self) -> String {
+        self.AdvertisedTrainIdent.to_string()
     }
 }

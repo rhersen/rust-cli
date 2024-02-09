@@ -1,3 +1,5 @@
+#![allow(non_snake_case)]
+
 use crate::train_announcement::TrainAnnouncement;
 use serde::Deserialize;
 
